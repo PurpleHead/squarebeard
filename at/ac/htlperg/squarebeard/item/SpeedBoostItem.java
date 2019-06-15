@@ -14,7 +14,7 @@ public class SpeedBoostItem extends Item {
 	
 	private static final Logger log = Logger.getLogger(SpeedBoostItem.class.getName());
 	
-	private static final float SPEED_BOOST = 42f;
+	private static final float SPEED_BOOST = 5f;
 	
 	static {
 		if (image == null) {

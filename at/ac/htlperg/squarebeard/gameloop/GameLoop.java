@@ -1,12 +1,14 @@
 package at.ac.htlperg.squarebeard.gameloop;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import at.ac.htlperg.squarebeard.events.UpdateEvent;
 import at.ac.htlperg.squarebeard.level.Level;
 import at.ac.htlperg.squarebeard.objects.GameObject;
+import at.ac.htlperg.squarebeard.objects.ray.Ray;
 import at.ac.htlperg.squarebeard.objects.tiles.Tile;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -24,7 +26,7 @@ public class GameLoop implements EventHandler<KeyEvent> {
 
 	private Thread loopThread;
 	private long delta = 0;
-	
+
 	private static final Logger log = Logger.getLogger(GameLoop.class.getName());
 
 	public static boolean running = true;
@@ -56,7 +58,7 @@ public class GameLoop implements EventHandler<KeyEvent> {
 	public void start() {
 		loopThread = new Thread(() -> {
 			log.info("Started game loop with timeout " + timeout + "ms");
-			
+
 			while (running) {
 				update();
 				try {
@@ -64,7 +66,7 @@ public class GameLoop implements EventHandler<KeyEvent> {
 				} catch (InterruptedException e) {
 				}
 			}
-			
+
 			log.info("Game Loop stopped");
 		}, "Game loop Thread");
 		loopThread.start();
@@ -75,6 +77,15 @@ public class GameLoop implements EventHandler<KeyEvent> {
 		level.getPlayer().onUpdate(event);
 		for (GameObject o : level.getObjects()) {
 			o.update(event);
+		}
+
+		Iterator<Ray> iter = getLevel().getRays().iterator();
+
+		while (iter.hasNext()) {
+			Ray ray = iter.next();
+			ray.update(event);
+			if (System.currentTimeMillis() - ray.getLiving() > 800)
+				iter.remove();
 		}
 		for (Tile[] a : level.getTiles()) {
 			for (Tile b : a) {
@@ -96,14 +107,14 @@ public class GameLoop implements EventHandler<KeyEvent> {
 
 	public void stop() {
 		log.info("Stopping game loop");
-		
+
 		running = false;
 	}
-	
+
 	public void clearCodes() {
 		codes.clear();
 	}
-	
+
 	public GraphicsContext getContext() {
 		return context;
 	}

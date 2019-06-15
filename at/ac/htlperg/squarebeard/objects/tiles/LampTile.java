@@ -1,7 +1,5 @@
 package at.ac.htlperg.squarebeard.objects.tiles;
 
-import java.util.logging.Logger;
-
 import at.ac.htlperg.squarebeard.events.UpdateEvent;
 import at.ac.htlperg.squarebeard.io.IOUtil;
 import at.ac.htlperg.squarebeard.level.Level;
@@ -11,8 +9,6 @@ import at.ac.htlperg.squarebeard.space.Vector;
 import javafx.scene.image.Image;
 
 public class LampTile extends Tile {
-	
-	private static final Logger log = Logger.getLogger(LampTile.class.getName());
 
 	public LampTile(Level level, Position pos) {
 		super(level, pos);
@@ -25,17 +21,18 @@ public class LampTile extends Tile {
 
 	@Override
 	public void onUpdate(UpdateEvent event) {
-		log.info(getPosition().toString());
-		for(double angle = 0; angle <= Math.PI * 2; angle+=0.03) {
-			getLevel().addObject(new Ray(getLevel(), this.getPosition().clone(Tile.TO_CENTER), Vector.ofAngle(angle, 1), 29));
+		for (double angle = 0; angle <= Math.PI * 2; angle += 0.02) {
+			Ray ray = new Ray(getLevel(), this.getPosition().clone(Tile.TO_CENTER), Vector.ofAngle(angle, 1), 29);
+			getLevel().getRays().add(ray);
 		}
+
 	}
-	
+
 	@Override
 	public boolean isSolid() {
-		return true;
+		return false;
 	}
-	
+
 	@Override
 	public boolean isTranslucent() {
 		return true;

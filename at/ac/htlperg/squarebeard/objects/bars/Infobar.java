@@ -14,11 +14,10 @@ import javafx.scene.text.Font;
 public class Infobar extends Bar {
 
 	private Player player;
-	private Font font = Font.loadFont(this.getClass().getResourceAsStream("../../../../../../assets/fonts/font.otf"),
-			45);
+	public static Font font = Font
+			.loadFont(Infobar.class.getResourceAsStream("../../../../../../assets/fonts/font.otf"), 45);
 	private Image heart;
 
-	// TODO: Cool ausrechna
 	public Infobar(Player player) {
 		super(Color.LIGHTGRAY, MainGame.SCREEN_WIDTH, 100);
 		this.setPlayer(player);
@@ -53,8 +52,8 @@ public class Infobar extends Bar {
 		for (Item item : player.getItems()) {
 			if (player.getItems().get(player.getCurrentItemIndex()).equals(item)) {
 				context.setFill(Color.BLACK);
-				context.fillRoundRect(width - 2.5, MainGame.SCREEN_HEIGHT - (getHeight() - 8) - 2.5, item.getImage().getWidth() + 5,
-						item.getImage().getHeight() + 5, 20, 20);
+				context.fillRoundRect(width - 2.5, MainGame.SCREEN_HEIGHT - (getHeight() - 8) - 2.5,
+						item.getImage().getWidth() + 5, item.getImage().getHeight() + 5, 20, 20);
 			}
 			context.setFill(Color.DIMGREY);
 			context.fillRoundRect(width, MainGame.SCREEN_HEIGHT - (getHeight() - 8), item.getImage().getWidth(),
